@@ -28,7 +28,6 @@ import android.widget.ImageView;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.AnalyticsListener;
 import com.androidnetworking.interfaces.BitmapRequestListener;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
@@ -68,14 +67,11 @@ public class MainActivity extends AppCompatActivity {
                 .addQueryParameter("limit", "3")
                 .setPriority(Priority.LOW)
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
                 .getAsJSONArray(new JSONArrayRequestListener() {
                     @Override
@@ -107,14 +103,11 @@ public class MainActivity extends AppCompatActivity {
                 .addPathParameter("userId", "1")
                 .setPriority(Priority.HIGH)
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
@@ -162,14 +155,11 @@ public class MainActivity extends AppCompatActivity {
                 .setBitmapMaxWidth(0)
                 .setBitmapConfig(Bitmap.Config.ARGB_8888)
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
                 .getAsBitmap(new BitmapRequestListener() {
                     @Override

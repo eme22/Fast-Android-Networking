@@ -31,14 +31,12 @@ import com.androidnetworking.common.ANRequest;
 import com.androidnetworking.common.ANResponse;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.AnalyticsListener;
 import com.androidnetworking.interfaces.DownloadListener;
 import com.androidnetworking.interfaces.DownloadProgressListener;
 import com.androidnetworking.interfaces.OkHttpResponseAndJSONArrayRequestListener;
 import com.androidnetworking.interfaces.OkHttpResponseAndJSONObjectRequestListener;
 import com.androidnetworking.interfaces.OkHttpResponseAndParsedRequestListener;
 import com.androidnetworking.interfaces.OkHttpResponseListener;
-import com.androidnetworking.interfaces.UploadProgressListener;
 import com.networking.model.User;
 import com.networking.utils.Utils;
 
@@ -75,14 +73,11 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                 .setTag(this)
                 .setPriority(Priority.LOW)
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
                 .prefetch();
     }
@@ -93,14 +88,11 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                 .setPriority(Priority.HIGH)
                 .setTag(this)
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
                 .prefetch();
     }
@@ -112,14 +104,11 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                 .setTag(this)
                 .setPriority(Priority.LOW)
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
                 .getAsOkHttpResponseAndObjectList(User.class, new OkHttpResponseAndParsedRequestListener<List<User>>() {
                     @Override
@@ -131,9 +120,9 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                             Log.d(TAG, "lastname : " + user.lastname);
                         }
                         if (okHttpResponse.isSuccessful()) {
-                            Log.d(TAG, "onResponse success headers : " + okHttpResponse.headers().toString());
+                            Log.d(TAG, "onResponse success headers : " + okHttpResponse.headers());
                         } else {
-                            Log.d(TAG, "onResponse not success headers : " + okHttpResponse.headers().toString());
+                            Log.d(TAG, "onResponse not success headers : " + okHttpResponse.headers());
                         }
                     }
 
@@ -151,14 +140,11 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                 .setPriority(Priority.LOW)
                 .setUserAgent("getAnUser")
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
                 .getAsOkHttpResponseAndObject(User.class, new OkHttpResponseAndParsedRequestListener<User>() {
                     @Override
@@ -167,9 +153,9 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                         Log.d(TAG, "firstname : " + user.firstname);
                         Log.d(TAG, "lastname : " + user.lastname);
                         if (okHttpResponse.isSuccessful()) {
-                            Log.d(TAG, "onResponse success headers : " + okHttpResponse.headers().toString());
+                            Log.d(TAG, "onResponse success headers : " + okHttpResponse.headers());
                         } else {
-                            Log.d(TAG, "onResponse not success headers : " + okHttpResponse.headers().toString());
+                            Log.d(TAG, "onResponse not success headers : " + okHttpResponse.headers());
                         }
                     }
 
@@ -188,22 +174,19 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                 .setTag(this)
                 .setPriority(Priority.LOW)
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 }).getAsOkHttpResponseAndJSONObject(new OkHttpResponseAndJSONObjectRequestListener() {
             @Override
             public void onResponse(Response okHttpResponse, JSONObject response) {
                 Log.d(TAG, "onResponse object : " + response.toString());
                 if (okHttpResponse.isSuccessful()) {
-                    Log.d(TAG, "onResponse success headers : " + okHttpResponse.headers().toString());
+                    Log.d(TAG, "onResponse success headers : " + okHttpResponse.headers());
                 } else {
-                    Log.d(TAG, "onResponse not success headers : " + okHttpResponse.headers().toString());
+                    Log.d(TAG, "onResponse not success headers : " + okHttpResponse.headers());
                 }
             }
 
@@ -225,25 +208,22 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                 .setExecutor(Executors.newSingleThreadExecutor())
                 .build();
 
-        anRequest.setAnalyticsListener(new AnalyticsListener() {
-            @Override
-            public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                Log.d(TAG, " bytesSent : " + bytesSent);
-                Log.d(TAG, " bytesReceived : " + bytesReceived);
-                Log.d(TAG, " isFromCache : " + isFromCache);
-            }
+        anRequest.setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+            Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+            Log.d(TAG, " bytesSent : " + bytesSent);
+            Log.d(TAG, " bytesReceived : " + bytesReceived);
+            Log.d(TAG, " isFromCache : " + isFromCache);
         });
 
         anRequest.getAsOkHttpResponseAndJSONObject(new OkHttpResponseAndJSONObjectRequestListener() {
             @Override
             public void onResponse(Response okHttpResponse, JSONObject response) {
                 Log.d(TAG, "onResponse object : " + response.toString());
-                Log.d(TAG, "onResponse isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
+                Log.d(TAG, "onResponse isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
                 if (okHttpResponse.isSuccessful()) {
-                    Log.d(TAG, "onResponse success headers : " + okHttpResponse.headers().toString());
+                    Log.d(TAG, "onResponse success headers : " + okHttpResponse.headers());
                 } else {
-                    Log.d(TAG, "onResponse not success headers : " + okHttpResponse.headers().toString());
+                    Log.d(TAG, "onResponse not success headers : " + okHttpResponse.headers());
                 }
             }
 
@@ -261,24 +241,21 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                 .setTag(this)
                 .setPriority(Priority.LOW)
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
                 .getAsOkHttpResponseAndJSONObject(new OkHttpResponseAndJSONObjectRequestListener() {
                     @Override
                     public void onResponse(Response okHttpResponse, JSONObject response) {
                         Log.d(TAG, "onResponse object : " + response.toString());
-                        Log.d(TAG, "onResponse isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
+                        Log.d(TAG, "onResponse isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
                         if (okHttpResponse.isSuccessful()) {
-                            Log.d(TAG, "onResponse success headers : " + okHttpResponse.headers().toString());
+                            Log.d(TAG, "onResponse success headers : " + okHttpResponse.headers());
                         } else {
-                            Log.d(TAG, "onResponse not success headers : " + okHttpResponse.headers().toString());
+                            Log.d(TAG, "onResponse not success headers : " + okHttpResponse.headers());
                         }
                     }
 
@@ -303,23 +280,20 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                 .setTag(this)
                 .setPriority(Priority.LOW)
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 }).getAsOkHttpResponseAndJSONObject(new OkHttpResponseAndJSONObjectRequestListener() {
             @Override
             public void onResponse(Response okHttpResponse, JSONObject response) {
                 Log.d(TAG, "onResponse object : " + response.toString());
-                Log.d(TAG, "onResponse isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
+                Log.d(TAG, "onResponse isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
                 if (okHttpResponse.isSuccessful()) {
-                    Log.d(TAG, "onResponse success headers : " + okHttpResponse.headers().toString());
+                    Log.d(TAG, "onResponse success headers : " + okHttpResponse.headers());
                 } else {
-                    Log.d(TAG, "onResponse not success headers : " + okHttpResponse.headers().toString());
+                    Log.d(TAG, "onResponse not success headers : " + okHttpResponse.headers());
                 }
             }
 
@@ -336,27 +310,21 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                 .setPriority(Priority.HIGH)
                 .setTag(this)
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
-                .setDownloadProgressListener(new DownloadProgressListener() {
-                    @Override
-                    public void onProgress(long bytesDownloaded, long totalBytes) {
-                        Log.d(TAG, "bytesDownloaded : " + bytesDownloaded + " totalBytes : " + totalBytes);
-                        Log.d(TAG, "setDownloadProgressListener isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
-                    }
+                .setDownloadProgressListener((bytesDownloaded, totalBytes) -> {
+                    Log.d(TAG, "bytesDownloaded : " + bytesDownloaded + " totalBytes : " + totalBytes);
+                    Log.d(TAG, "setDownloadProgressListener isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
                 })
                 .startDownload(new DownloadListener() {
                     @Override
                     public void onDownloadComplete() {
                         Log.d(TAG, "File download Completed");
-                        Log.d(TAG, "onDownloadComplete isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
+                        Log.d(TAG, "onDownloadComplete isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
                     }
 
                     @Override
@@ -383,20 +351,17 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                 .setPriority(Priority.MEDIUM)
                 .setTag(this)
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
                 .startDownload(new DownloadListener() {
                     @Override
                     public void onDownloadComplete() {
                         Log.d(TAG, "Image download Completed");
-                        Log.d(TAG, "onDownloadComplete isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
+                        Log.d(TAG, "onDownloadComplete isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
                     }
 
                     @Override
@@ -423,32 +388,26 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                 .addMultipartFile("image", new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "test.png"))
                 .setTag(this)
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
-                .setUploadProgressListener(new UploadProgressListener() {
-                    @Override
-                    public void onProgress(long bytesUploaded, long totalBytes) {
-                        Log.d(TAG, "bytesUploaded : " + bytesUploaded + " totalBytes : " + totalBytes);
-                        Log.d(TAG, "setUploadProgressListener isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
-                    }
+                .setUploadProgressListener((bytesUploaded, totalBytes) -> {
+                    Log.d(TAG, "bytesUploaded : " + bytesUploaded + " totalBytes : " + totalBytes);
+                    Log.d(TAG, "setUploadProgressListener isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
                 })
                 .getAsOkHttpResponseAndJSONObject(new OkHttpResponseAndJSONObjectRequestListener() {
                     @Override
                     public void onResponse(Response okHttpResponse, JSONObject response) {
                         Log.d(TAG, "Image upload Completed");
                         Log.d(TAG, "onResponse object : " + response.toString());
-                        Log.d(TAG, "onResponse isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
+                        Log.d(TAG, "onResponse isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
                         if (okHttpResponse.isSuccessful()) {
-                            Log.d(TAG, "onResponse success headers : " + okHttpResponse.headers().toString());
+                            Log.d(TAG, "onResponse success headers : " + okHttpResponse.headers());
                         } else {
-                            Log.d(TAG, "onResponse not success headers : " + okHttpResponse.headers().toString());
+                            Log.d(TAG, "onResponse not success headers : " + okHttpResponse.headers());
                         }
                     }
 
@@ -467,24 +426,21 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                 .setPriority(Priority.LOW)
                 .doNotCacheResponse()
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
                 .getAsOkHttpResponseAndJSONArray(new OkHttpResponseAndJSONArrayRequestListener() {
                     @Override
                     public void onResponse(Response okHttpResponse, JSONArray response) {
                         Log.d(TAG, "onResponse object : " + response.toString());
-                        Log.d(TAG, "onResponse isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
+                        Log.d(TAG, "onResponse isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
                         if (okHttpResponse.isSuccessful()) {
-                            Log.d(TAG, "onResponse success headers : " + okHttpResponse.headers().toString());
+                            Log.d(TAG, "onResponse success headers : " + okHttpResponse.headers());
                         } else {
-                            Log.d(TAG, "onResponse not success headers : " + okHttpResponse.headers().toString());
+                            Log.d(TAG, "onResponse not success headers : " + okHttpResponse.headers());
                         }
                     }
 
@@ -503,24 +459,21 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                 .setPriority(Priority.LOW)
                 .getResponseOnlyIfCached()
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
                 .getAsOkHttpResponseAndJSONArray(new OkHttpResponseAndJSONArrayRequestListener() {
                     @Override
                     public void onResponse(Response okHttpResponse, JSONArray response) {
                         Log.d(TAG, "onResponse object : " + response.toString());
-                        Log.d(TAG, "onResponse isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
+                        Log.d(TAG, "onResponse isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
                         if (okHttpResponse.isSuccessful()) {
-                            Log.d(TAG, "onResponse success headers : " + okHttpResponse.headers().toString());
+                            Log.d(TAG, "onResponse success headers : " + okHttpResponse.headers());
                         } else {
-                            Log.d(TAG, "onResponse not success headers : " + okHttpResponse.headers().toString());
+                            Log.d(TAG, "onResponse not success headers : " + okHttpResponse.headers());
                         }
                     }
 
@@ -539,24 +492,21 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                 .setPriority(Priority.LOW)
                 .getResponseOnlyFromNetwork()
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
                 .getAsOkHttpResponseAndJSONArray(new OkHttpResponseAndJSONArrayRequestListener() {
                     @Override
                     public void onResponse(Response okHttpResponse, JSONArray response) {
                         Log.d(TAG, "onResponse object : " + response.toString());
-                        Log.d(TAG, "onResponse isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
+                        Log.d(TAG, "onResponse isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
                         if (okHttpResponse.isSuccessful()) {
-                            Log.d(TAG, "onResponse success headers : " + okHttpResponse.headers().toString());
+                            Log.d(TAG, "onResponse success headers : " + okHttpResponse.headers());
                         } else {
-                            Log.d(TAG, "onResponse not success headers : " + okHttpResponse.headers().toString());
+                            Log.d(TAG, "onResponse not success headers : " + okHttpResponse.headers());
                         }
                     }
 
@@ -575,24 +525,21 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                 .setPriority(Priority.LOW)
                 .setMaxAgeCacheControl(0, TimeUnit.SECONDS)
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
                 .getAsOkHttpResponseAndJSONArray(new OkHttpResponseAndJSONArrayRequestListener() {
                     @Override
                     public void onResponse(Response okHttpResponse, JSONArray response) {
                         Log.d(TAG, "onResponse object : " + response.toString());
-                        Log.d(TAG, "onResponse isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
+                        Log.d(TAG, "onResponse isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
                         if (okHttpResponse.isSuccessful()) {
-                            Log.d(TAG, "onResponse success headers : " + okHttpResponse.headers().toString());
+                            Log.d(TAG, "onResponse success headers : " + okHttpResponse.headers());
                         } else {
-                            Log.d(TAG, "onResponse not success headers : " + okHttpResponse.headers().toString());
+                            Log.d(TAG, "onResponse not success headers : " + okHttpResponse.headers());
                         }
                     }
 
@@ -611,24 +558,21 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                 .setPriority(Priority.LOW)
                 .setMaxStaleCacheControl(365, TimeUnit.SECONDS)
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
                 .getAsOkHttpResponseAndJSONArray(new OkHttpResponseAndJSONArrayRequestListener() {
                     @Override
                     public void onResponse(Response okHttpResponse, JSONArray response) {
                         Log.d(TAG, "onResponse object : " + response.toString());
-                        Log.d(TAG, "onResponse isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
+                        Log.d(TAG, "onResponse isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
                         if (okHttpResponse.isSuccessful()) {
-                            Log.d(TAG, "onResponse success headers : " + okHttpResponse.headers().toString());
+                            Log.d(TAG, "onResponse success headers : " + okHttpResponse.headers());
                         } else {
-                            Log.d(TAG, "onResponse not success headers : " + okHttpResponse.headers().toString());
+                            Log.d(TAG, "onResponse not success headers : " + okHttpResponse.headers());
                         }
                     }
 
@@ -645,31 +589,25 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                 .setPriority(Priority.HIGH)
                 .setTag("cleanupDestinationTest")
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
-                .setDownloadProgressListener(new DownloadProgressListener() {
-                    @Override
-                    public void onProgress(long bytesDownloaded, long totalBytes) {
-                        Log.d(TAG, "bytesDownloaded : " + bytesDownloaded + " totalBytes : " + totalBytes);
-                        Log.d(TAG, "setDownloadProgressListener isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
-                        if (bytesDownloaded > 50) {
-                            AndroidNetworking.cancel("cleanupDestinationTest");
-                            Log.d(TAG, "cancel: cleanupDestinationTest");
-                        }
+                .setDownloadProgressListener((bytesDownloaded, totalBytes) -> {
+                    Log.d(TAG, "bytesDownloaded : " + bytesDownloaded + " totalBytes : " + totalBytes);
+                    Log.d(TAG, "setDownloadProgressListener isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
+                    if (bytesDownloaded > 50) {
+                        AndroidNetworking.cancel("cleanupDestinationTest");
+                        Log.d(TAG, "cancel: cleanupDestinationTest");
                     }
                 })
                 .startDownload(new DownloadListener() {
                     @Override
                     public void onDownloadComplete() {
                         Log.d(TAG, "File download Completed");
-                        Log.d(TAG, "onDownloadComplete isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
+                        Log.d(TAG, "onDownloadComplete isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
                     }
 
                     @Override
@@ -698,24 +636,21 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                 .setOkHttpClient(new OkHttpClient())
                 .setPriority(Priority.LOW)
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
                 .getAsOkHttpResponseAndJSONObject(new OkHttpResponseAndJSONObjectRequestListener() {
                     @Override
                     public void onResponse(Response okHttpResponse, JSONObject response) {
                         Log.d(TAG, "onResponse object : " + response.toString());
-                        Log.d(TAG, "onResponse isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
+                        Log.d(TAG, "onResponse isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
                         if (okHttpResponse.isSuccessful()) {
-                            Log.d(TAG, "onResponse success headers : " + okHttpResponse.headers().toString());
+                            Log.d(TAG, "onResponse success headers : " + okHttpResponse.headers());
                         } else {
-                            Log.d(TAG, "onResponse not success headers : " + okHttpResponse.headers().toString());
+                            Log.d(TAG, "onResponse not success headers : " + okHttpResponse.headers());
                         }
                     }
 
@@ -733,27 +668,21 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                 .setTag(this)
                 .setOkHttpClient(new OkHttpClient())
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
-                .setDownloadProgressListener(new DownloadProgressListener() {
-                    @Override
-                    public void onProgress(long bytesDownloaded, long totalBytes) {
-                        Log.d(TAG, "bytesDownloaded : " + bytesDownloaded + " totalBytes : " + totalBytes);
-                        Log.d(TAG, "setDownloadProgressListener isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
-                    }
+                .setDownloadProgressListener((bytesDownloaded, totalBytes) -> {
+                    Log.d(TAG, "bytesDownloaded : " + bytesDownloaded + " totalBytes : " + totalBytes);
+                    Log.d(TAG, "setDownloadProgressListener isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
                 })
                 .startDownload(new DownloadListener() {
                     @Override
                     public void onDownloadComplete() {
                         Log.d(TAG, "File download Completed");
-                        Log.d(TAG, "onDownloadComplete isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
+                        Log.d(TAG, "onDownloadComplete isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
                     }
 
                     @Override
@@ -782,14 +711,11 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                 .setTag(this)
                 .setPriority(Priority.LOW)
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
                 .getAsOkHttpResponse(new OkHttpResponseListener() {
                     @Override
@@ -798,7 +724,11 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                             if (response.isSuccessful()) {
                                 Log.d(TAG, "response is successful");
                                 try {
-                                    Log.d(TAG, "response : " + response.body().source().readUtf8());
+                                    if (response.body() != null) {
+                                        Log.d(TAG, "response : " + response.body().source().readUtf8());
+                                    } else {
+                                        Log.d(TAG, "response body is null");
+                                    }
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -822,14 +752,11 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                 .setTag(this)
                 .setPriority(Priority.LOW)
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
                 .getAsOkHttpResponse(new OkHttpResponseListener() {
                     @Override
@@ -838,7 +765,11 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                             if (response.isSuccessful()) {
                                 Log.d(TAG, "response is successful");
                                 try {
-                                    Log.d(TAG, "response : " + response.body().source().readUtf8());
+                                    if (response.body() != null) {
+                                        Log.d(TAG, "response : " + response.body().source().readUtf8());
+                                    } else {
+                                        Log.d(TAG, "response body is null");
+                                    }
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -861,21 +792,15 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                 .addMultipartFile("image", new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "test.png"))
                 .setTag(this)
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
-                .setUploadProgressListener(new UploadProgressListener() {
-                    @Override
-                    public void onProgress(long bytesUploaded, long totalBytes) {
-                        Log.d(TAG, "bytesUploaded : " + bytesUploaded + " totalBytes : " + totalBytes);
-                        Log.d(TAG, "setUploadProgressListener isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
-                    }
+                .setUploadProgressListener((bytesUploaded, totalBytes) -> {
+                    Log.d(TAG, "bytesUploaded : " + bytesUploaded + " totalBytes : " + totalBytes);
+                    Log.d(TAG, "setUploadProgressListener isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
                 })
                 .getAsOkHttpResponse(new OkHttpResponseListener() {
                     @Override
@@ -884,7 +809,12 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                             if (response.isSuccessful()) {
                                 Log.d(TAG, "response is successful");
                                 try {
-                                    Log.d(TAG, "response : " + response.body().source().readUtf8());
+                                    if (response.body() != null) {
+                                        Log.d(TAG, "response : " + response.body().source().readUtf8());
+                                    }
+                                    else {
+                                        Log.d(TAG, "response body is null");
+                                    }
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -915,22 +845,16 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                         .setPriority(Priority.HIGH)
                         .setTag(this)
                         .build()
-                        .setAnalyticsListener(new AnalyticsListener() {
-                            @Override
-                            public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                                Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                                Log.d(TAG, " bytesSent : " + bytesSent);
-                                Log.d(TAG, " bytesReceived : " + bytesReceived);
-                                Log.d(TAG, " isFromCache : " + isFromCache);
-                            }
+                        .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                            Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                            Log.d(TAG, " bytesSent : " + bytesSent);
+                            Log.d(TAG, " bytesReceived : " + bytesReceived);
+                            Log.d(TAG, " isFromCache : " + isFromCache);
                         })
-                        .setDownloadProgressListener(new DownloadProgressListener() {
-                            @Override
-                            public void onProgress(long bytesDownloaded, long totalBytes) {
-                                Log.d(TAG, "bytesDownloaded : " + bytesDownloaded + " totalBytes : " + totalBytes);
-                                Log.d(TAG, "setDownloadProgressListener isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
+                        .setDownloadProgressListener((bytesDownloaded, totalBytes) -> {
+                            Log.d(TAG, "bytesDownloaded : " + bytesDownloaded + " totalBytes : " + totalBytes);
+                            Log.d(TAG, "setDownloadProgressListener isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
 
-                            }
                         });
                 ANResponse<String> responseOne = requestOne.executeForDownload();
 
@@ -938,7 +862,7 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                     Log.d(TAG, "checkSynchronousCall : download success");
                     Log.d(TAG, "checkSynchronousCall : download result " + responseOne.getResult());
                     Response response = responseOne.getOkHttpResponse();
-                    Log.d(TAG, "checkSynchronousCall : headers : " + response.headers().toString());
+                    Log.d(TAG, "checkSynchronousCall : headers : " + response.headers());
                 } else {
                     Log.d(TAG, "checkSynchronousCall : download failed");
                     Utils.logError(TAG, responseOne.getError());
@@ -951,14 +875,11 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                         .setTag(this)
                         .setPriority(Priority.LOW)
                         .build()
-                        .setAnalyticsListener(new AnalyticsListener() {
-                            @Override
-                            public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                                Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                                Log.d(TAG, " bytesSent : " + bytesSent);
-                                Log.d(TAG, " bytesReceived : " + bytesReceived);
-                                Log.d(TAG, " isFromCache : " + isFromCache);
-                            }
+                        .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                            Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                            Log.d(TAG, " bytesSent : " + bytesSent);
+                            Log.d(TAG, " bytesReceived : " + bytesReceived);
+                            Log.d(TAG, " isFromCache : " + isFromCache);
                         });
                 ANResponse<List<User>> responseTwo = requestTwo.executeForObjectList(User.class);
 
@@ -972,7 +893,7 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                         Log.d(TAG, "lastname : " + user.lastname);
                     }
                     Response response = responseTwo.getOkHttpResponse();
-                    Log.d(TAG, "checkSynchronousCall : headers : " + response.headers().toString());
+                    Log.d(TAG, "checkSynchronousCall : headers : " + response.headers());
                 } else {
                     Log.d(TAG, "checkSynchronousCall : response failed");
                     Utils.logError(TAG, responseTwo.getError());
@@ -993,14 +914,11 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                         .setTag(this)
                         .setPriority(Priority.LOW)
                         .build()
-                        .setAnalyticsListener(new AnalyticsListener() {
-                            @Override
-                            public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                                Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                                Log.d(TAG, " bytesSent : " + bytesSent);
-                                Log.d(TAG, " bytesReceived : " + bytesReceived);
-                                Log.d(TAG, " isFromCache : " + isFromCache);
-                            }
+                        .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                            Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                            Log.d(TAG, " bytesSent : " + bytesSent);
+                            Log.d(TAG, " bytesReceived : " + bytesReceived);
+                            Log.d(TAG, " isFromCache : " + isFromCache);
                         });
                 ANResponse<JSONObject> responseThree = requestThree.executeForJSONObject();
 
@@ -1009,7 +927,7 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                     JSONObject jsonObjectFinal = responseThree.getResult();
                     Log.d(TAG, "checkSynchronousCall : jsonObjectANResponse result " + jsonObjectFinal.toString());
                     Response response = responseThree.getOkHttpResponse();
-                    Log.d(TAG, "checkSynchronousCall : headers : " + response.headers().toString());
+                    Log.d(TAG, "checkSynchronousCall : headers : " + response.headers());
                 } else {
                     Log.d(TAG, "checkSynchronousCall : jsonObjectANResponse failed");
                     Utils.logError(TAG, responseThree.getError());
@@ -1022,14 +940,11 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                         .setTag(this)
                         .setPriority(Priority.LOW)
                         .build()
-                        .setAnalyticsListener(new AnalyticsListener() {
-                            @Override
-                            public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                                Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                                Log.d(TAG, " bytesSent : " + bytesSent);
-                                Log.d(TAG, " bytesReceived : " + bytesReceived);
-                                Log.d(TAG, " isFromCache : " + isFromCache);
-                            }
+                        .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                            Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                            Log.d(TAG, " bytesSent : " + bytesSent);
+                            Log.d(TAG, " bytesReceived : " + bytesReceived);
+                            Log.d(TAG, " isFromCache : " + isFromCache);
                         });
                 ANResponse<Response> responseFour = requestFour.executeForOkHttpResponse();
 
@@ -1041,7 +956,12 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                         if (okHttpResponse.isSuccessful()) {
                             Log.d(TAG, "response is successful");
                             try {
-                                Log.d(TAG, "response : " + okHttpResponse.body().source().readUtf8());
+                                if (okHttpResponse.body() != null) {
+                                    Log.d(TAG, "response : " + okHttpResponse.body().source().readUtf8());
+                                } else {
+                                    Log.d(TAG, "response body is null");
+                                }
+
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -1065,7 +985,7 @@ public class OkHttpResponseTestActivity extends AppCompatActivity {
                 .getAsOkHttpResponse(new OkHttpResponseListener() {
                     @Override
                     public void onResponse(Response response) {
-                        Log.d(TAG, "response : " + response.headers().toString());
+                        Log.d(TAG, "response : " + response.headers());
                     }
 
                     @Override

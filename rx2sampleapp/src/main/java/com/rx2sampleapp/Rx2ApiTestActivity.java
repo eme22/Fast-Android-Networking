@@ -27,9 +27,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.interfaces.AnalyticsListener;
-import com.androidnetworking.interfaces.DownloadProgressListener;
-import com.androidnetworking.interfaces.UploadProgressListener;
 import com.rx2androidnetworking.Rx2ANRequest;
 import com.rx2androidnetworking.Rx2AndroidNetworking;
 import com.rx2sampleapp.model.User;
@@ -67,14 +64,11 @@ public class Rx2ApiTestActivity extends AppCompatActivity {
                 .addPathParameter("pageNumber", "0")
                 .addQueryParameter("limit", "3")
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
                 .getObjectListSingle(User.class)
                 .subscribeOn(Schedulers.io())
@@ -87,7 +81,7 @@ public class Rx2ApiTestActivity extends AppCompatActivity {
 
                     @Override
                     public void onSuccess(@NonNull List<User> users) {
-                        Log.d(TAG, "onResponse isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
+                        Log.d(TAG, "onResponse isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
                         Log.d(TAG, "userList size : " + users.size());
                         for (User user : users) {
                             Log.d(TAG, "id : " + user.id);
@@ -108,14 +102,11 @@ public class Rx2ApiTestActivity extends AppCompatActivity {
                 .addPathParameter("userId", "1")
                 .setUserAgent("getAnUser")
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
                 .getObjectSingle(User.class)
                 .subscribeOn(Schedulers.io())
@@ -128,7 +119,7 @@ public class Rx2ApiTestActivity extends AppCompatActivity {
 
                     @Override
                     public void onSuccess(@NonNull User user) {
-                        Log.d(TAG, "onResponse isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
+                        Log.d(TAG, "onResponse isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
                         Log.d(TAG, "id : " + user.id);
                         Log.d(TAG, "firstname : " + user.firstname);
                         Log.d(TAG, "lastname : " + user.lastname);
@@ -147,14 +138,11 @@ public class Rx2ApiTestActivity extends AppCompatActivity {
 
         getRequestBuilder.addHeaders("token", "1234")
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
                 .getJSONObjectSingle()
                 .subscribeOn(Schedulers.io())
@@ -168,7 +156,7 @@ public class Rx2ApiTestActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(@NonNull JSONObject jsonObject) {
                         Log.d(TAG, "onResponse object : " + jsonObject.toString());
-                        Log.d(TAG, "onResponse isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
+                        Log.d(TAG, "onResponse isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
                     }
 
                     @Override
@@ -187,14 +175,11 @@ public class Rx2ApiTestActivity extends AppCompatActivity {
         Rx2ANRequest rxAnRequest = postRequestBuilder.setTag(this)
                 .build();
 
-        rxAnRequest.setAnalyticsListener(new AnalyticsListener() {
-            @Override
-            public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                Log.d(TAG, " bytesSent : " + bytesSent);
-                Log.d(TAG, " bytesReceived : " + bytesReceived);
-                Log.d(TAG, " isFromCache : " + isFromCache);
-            }
+        rxAnRequest.setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+            Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+            Log.d(TAG, " bytesSent : " + bytesSent);
+            Log.d(TAG, " bytesReceived : " + bytesReceived);
+            Log.d(TAG, " isFromCache : " + isFromCache);
         });
 
         rxAnRequest.getJSONObjectSingle()
@@ -209,7 +194,7 @@ public class Rx2ApiTestActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(@NonNull JSONObject jsonObject) {
                         Log.d(TAG, "onResponse object : " + jsonObject.toString());
-                        Log.d(TAG, "onResponse isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
+                        Log.d(TAG, "onResponse isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
                     }
 
                     @Override
@@ -224,14 +209,11 @@ public class Rx2ApiTestActivity extends AppCompatActivity {
                 .addBodyParameter("firstname", "Amit")
                 .addBodyParameter("lastname", "Shekhar")
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
                 .getJSONObjectSingle()
                 .subscribeOn(Schedulers.io())
@@ -245,7 +227,7 @@ public class Rx2ApiTestActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(@NonNull JSONObject jsonObject) {
                         Log.d(TAG, "onResponse object : " + jsonObject.toString());
-                        Log.d(TAG, "onResponse isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
+                        Log.d(TAG, "onResponse isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
                     }
 
                     @Override
@@ -266,14 +248,11 @@ public class Rx2ApiTestActivity extends AppCompatActivity {
         Rx2AndroidNetworking.post(ApiEndPoint.BASE_URL + ApiEndPoint.POST_CREATE_AN_USER)
                 .addJSONObjectBody(jsonObject)
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
                 .getJSONObjectSingle()
                 .subscribeOn(Schedulers.io())
@@ -287,7 +266,7 @@ public class Rx2ApiTestActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(@NonNull JSONObject jsonObject) {
                         Log.d(TAG, "onResponse object : " + jsonObject.toString());
-                        Log.d(TAG, "onResponse isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
+                        Log.d(TAG, "onResponse isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
                     }
 
                     @Override
@@ -301,21 +280,15 @@ public class Rx2ApiTestActivity extends AppCompatActivity {
         String url = "http://www.colorado.edu/conflict/peace/download/peace_problem.ZIP";
         Rx2AndroidNetworking.download(url, Utils.getRootDirPath(getApplicationContext()), "file1.zip")
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
-                .setDownloadProgressListener(new DownloadProgressListener() {
-                    @Override
-                    public void onProgress(long bytesDownloaded, long totalBytes) {
-                        Log.d(TAG, "bytesDownloaded : " + bytesDownloaded + " totalBytes : " + totalBytes);
-                        Log.d(TAG, "setDownloadProgressListener isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
-                    }
+                .setDownloadProgressListener((bytesDownloaded, totalBytes) -> {
+                    Log.d(TAG, "bytesDownloaded : " + bytesDownloaded + " totalBytes : " + totalBytes);
+                    Log.d(TAG, "setDownloadProgressListener isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
                 })
                 .getDownloadCompletable()
                 .subscribeOn(Schedulers.io())
@@ -329,7 +302,7 @@ public class Rx2ApiTestActivity extends AppCompatActivity {
                     @Override
                     public void onComplete() {
                         Log.d(TAG, "File download Completed");
-                        Log.d(TAG, "onDownloadComplete isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
+                        Log.d(TAG, "onDownloadComplete isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
                     }
 
                     @Override
@@ -343,14 +316,11 @@ public class Rx2ApiTestActivity extends AppCompatActivity {
         String url = "http://i.imgur.com/AtbX9iX.png";
         Rx2AndroidNetworking.download(url, Utils.getRootDirPath(getApplicationContext()), "image1.png")
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
                 .getDownloadCompletable()
                 .subscribeOn(Schedulers.io())
@@ -364,7 +334,7 @@ public class Rx2ApiTestActivity extends AppCompatActivity {
                     @Override
                     public void onComplete() {
                         Log.d(TAG, "File download Completed");
-                        Log.d(TAG, "onDownloadComplete isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
+                        Log.d(TAG, "onDownloadComplete isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
                     }
 
                     @Override
@@ -378,21 +348,15 @@ public class Rx2ApiTestActivity extends AppCompatActivity {
         Single<JSONObject> single = Rx2AndroidNetworking.upload(ApiEndPoint.BASE_URL + ApiEndPoint.UPLOAD_IMAGE)
                 .addMultipartFile("image", new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "test.png"))
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
-                .setUploadProgressListener(new UploadProgressListener() {
-                    @Override
-                    public void onProgress(long bytesUploaded, long totalBytes) {
-                        Log.d(TAG, "bytesUploaded : " + bytesUploaded + " totalBytes : " + totalBytes);
-                        Log.d(TAG, "setUploadProgressListener isMainThread : " + String.valueOf(Looper.myLooper() == Looper.getMainLooper()));
-                    }
+                .setUploadProgressListener((bytesUploaded, totalBytes) -> {
+                    Log.d(TAG, "bytesUploaded : " + bytesUploaded + " totalBytes : " + totalBytes);
+                    Log.d(TAG, "setUploadProgressListener isMainThread : " + (Looper.myLooper() == Looper.getMainLooper()));
                 })
                 .getJSONObjectSingle();
 
@@ -450,14 +414,11 @@ public class Rx2ApiTestActivity extends AppCompatActivity {
                 .setBitmapMaxWidth(0)
                 .setBitmapConfig(Bitmap.Config.ARGB_8888)
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
                 .getBitmapSingle()
                 .subscribeOn(Schedulers.io())

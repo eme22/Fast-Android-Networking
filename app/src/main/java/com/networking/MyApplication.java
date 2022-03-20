@@ -22,8 +22,6 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.ConnectionQuality;
-import com.androidnetworking.interfaces.ConnectionQualityChangeListener;
 
 /**
  * Created by amitshekhar on 22/03/16.
@@ -46,12 +44,7 @@ public class MyApplication extends Application {
         options.inPurgeable = true;
         AndroidNetworking.setBitmapDecodeOptions(options);
         AndroidNetworking.enableLogging();
-        AndroidNetworking.setConnectionQualityChangeListener(new ConnectionQualityChangeListener() {
-            @Override
-            public void onChange(ConnectionQuality currentConnectionQuality, int currentBandwidth) {
-                Log.d(TAG, "onChange: currentConnectionQuality : " + currentConnectionQuality + " currentBandwidth : " + currentBandwidth);
-            }
-        });
+        AndroidNetworking.setConnectionQualityChangeListener((currentConnectionQuality, currentBandwidth) -> Log.d(TAG, "onChange: currentConnectionQuality : " + currentConnectionQuality + " currentBandwidth : " + currentBandwidth));
 
     }
 

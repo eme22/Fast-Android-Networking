@@ -26,7 +26,6 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 
-import com.androidnetworking.interfaces.AnalyticsListener;
 import com.rx2androidnetworking.Rx2AndroidNetworking;
 import com.rx2sampleapp.model.ApiUser;
 import com.rx2sampleapp.model.User;
@@ -44,9 +43,7 @@ import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -79,14 +76,11 @@ public class Rx2OperatorExampleActivity extends AppCompatActivity {
                 .addPathParameter("pageNumber", "0")
                 .addQueryParameter("limit", "3")
                 .build()
-                .setAnalyticsListener(new AnalyticsListener() {
-                    @Override
-                    public void onReceived(long timeTakenInMillis, long bytesSent, long bytesReceived, boolean isFromCache) {
-                        Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
-                        Log.d(TAG, " bytesSent : " + bytesSent);
-                        Log.d(TAG, " bytesReceived : " + bytesReceived);
-                        Log.d(TAG, " isFromCache : " + isFromCache);
-                    }
+                .setAnalyticsListener((timeTakenInMillis, bytesSent, bytesReceived, isFromCache) -> {
+                    Log.d(TAG, " timeTakenInMillis : " + timeTakenInMillis);
+                    Log.d(TAG, " bytesSent : " + bytesSent);
+                    Log.d(TAG, " bytesReceived : " + bytesReceived);
+                    Log.d(TAG, " isFromCache : " + isFromCache);
                 })
                 .getObjectListSingle(User.class);
 
@@ -146,21 +140,15 @@ public class Rx2OperatorExampleActivity extends AppCompatActivity {
      ************************************/
 
     public void map(View view) {
+        // here we get ApiUser from server
+        // then by converting, we are returning user
         Rx2AndroidNetworking.get("https://fierce-cove-29863.herokuapp.com/getAnUser/{userId}")
                 .addPathParameter("userId", "1")
                 .build()
                 .getObjectSingle(ApiUser.class)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .map(new Function<ApiUser, User>() {
-                    @Override
-                    public User apply(ApiUser apiUser) throws Exception {
-                        // here we get ApiUser from server
-                        User user = new User(apiUser);
-                        // then by converting, we are returning user
-                        return user;
-                    }
-                })
+                .map(User::new)
                 .subscribe(new SingleObserver<User>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable disposable) {
@@ -212,14 +200,7 @@ public class Rx2OperatorExampleActivity extends AppCompatActivity {
     private void findUsersWhoLovesBoth() {
         // here we are using zip operator to combine both request
         Observable.zip(getCricketFansObservable(), getFootballFansObservable(),
-                new BiFunction<List<User>, List<User>, List<User>>() {
-                    @Override
-                    public List<User> apply(List<User> cricketFans, List<User> footballFans) throws Exception {
-                        List<User> userWhoLovesBoth =
-                                filterUserWhoLovesBoth(cricketFans, footballFans);
-                        return userWhoLovesBoth;
-                    }
-                })
+                this::filterUserWhoLovesBoth)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<User>>() {
@@ -280,19 +261,13 @@ public class Rx2OperatorExampleActivity extends AppCompatActivity {
     }
 
     public void flatMapAndFilter(View view) {
+        // flatMap - to return users one by one
+        // returning user one by one from usersList.
         getAllMyFriendsObservable()
-                .flatMap(new Function<List<User>, ObservableSource<User>>() { // flatMap - to return users one by one
-                    @Override
-                    public ObservableSource<User> apply(List<User> usersList) throws Exception {
-                        return Observable.fromIterable(usersList); // returning user one by one from usersList.
-                    }
-                })
-                .filter(new Predicate<User>() {
-                    @Override
-                    public boolean test(User user) throws Exception {
-                        // filtering user who follows me.
-                        return user.isFollowing;
-                    }
+                .flatMap((Function<List<User>, ObservableSource<User>>) Observable::fromIterable)
+                .filter(user -> {
+                    // filtering user who follows me.
+                    return user.isFollowing;
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -327,13 +302,10 @@ public class Rx2OperatorExampleActivity extends AppCompatActivity {
      ************************************/
 
     public void take(View view) {
+        // flatMap - to return users one by one
+        // returning user one by one from usersList.
         getUserListObservable()
-                .flatMap(new Function<List<User>, ObservableSource<User>>() { // flatMap - to return users one by one
-                    @Override
-                    public ObservableSource<User> apply(List<User> usersList) throws Exception {
-                        return Observable.fromIterable(usersList); // returning user one by one from usersList.
-                    }
-                })
+                .flatMap((Function<List<User>, ObservableSource<User>>) Observable::fromIterable)
                 .take(4) // it will only emit first 4 users out of all
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -371,21 +343,15 @@ public class Rx2OperatorExampleActivity extends AppCompatActivity {
 
 
     public void flatMap(View view) {
+        // flatMap - to return users one by one
+        // returning user one by one from usersList.
         getUserListObservable()
-                .flatMap(new Function<List<User>, ObservableSource<User>>() { // flatMap - to return users one by one
-                    @Override
-                    public ObservableSource<User> apply(List<User> usersList) throws Exception {
-                        return Observable.fromIterable(usersList); // returning user one by one from usersList.
-                    }
-                })
-                .flatMap(new Function<User, ObservableSource<UserDetail>>() {
-                    @Override
-                    public ObservableSource<UserDetail> apply(User user) throws Exception {
-                        // here we get the user one by one
-                        // and returns corresponding getUserDetailObservable
-                        // for that userId
-                        return getUserDetailObservable(user.id);
-                    }
+                .flatMap((Function<List<User>, ObservableSource<User>>) Observable::fromIterable)
+                .flatMap((Function<User, ObservableSource<UserDetail>>) user -> {
+                    // here we get the user one by one
+                    // and returns corresponding getUserDetailObservable
+                    // for that userId
+                    return getUserDetailObservable(user.id);
                 })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -435,30 +401,20 @@ public class Rx2OperatorExampleActivity extends AppCompatActivity {
     }
 
     public void flatMapWithZip(View view) {
+        // flatMap - to return users one by one
+        // returning user one by one from usersList.
         getUserListObservable()
-                .flatMap(new Function<List<User>, ObservableSource<User>>() { // flatMap - to return users one by one
-                    @Override
-                    public ObservableSource<User> apply(List<User> usersList) throws Exception {
-                        return Observable.fromIterable(usersList); // returning user one by one from usersList.
-                    }
-                })
-                .flatMap(new Function<User, ObservableSource<Pair<UserDetail, User>>>() {
-                    @Override
-                    public ObservableSource<Pair<UserDetail, User>> apply(User user) throws Exception {
-                        // here we get the user one by one and then we are zipping
-                        // two observable - one getUserDetailObservable (network call to get userDetail)
-                        // and another Observable.just(user) - just to emit user
-                        return Observable.zip(getUserDetailObservable(user.id),
-                                Observable.just(user),
-                                new BiFunction<UserDetail, User, Pair<UserDetail, User>>() {
-                                    @Override
-                                    public Pair<UserDetail, User> apply(UserDetail userDetail, User user) throws Exception {
-                                        // runs when network call completes
-                                        // we get here userDetail for the corresponding user
-                                        return new Pair<>(userDetail, user); // returning the pair(userDetail, user)
-                                    }
-                                });
-                    }
+                .flatMap((Function<List<User>, ObservableSource<User>>) Observable::fromIterable)
+                .flatMap((Function<User, ObservableSource<Pair<UserDetail, User>>>) user -> {
+                    // here we get the user one by one and then we are zipping
+                    // two observable - one getUserDetailObservable (network call to get userDetail)
+                    // and another Observable.just(user) - just to emit user
+                    // runs when network call completes
+                    // we get here userDetail for the corresponding user
+                    // returning the pair(userDetail, user)
+                    return Observable.zip(getUserDetailObservable(user.id),
+                            Observable.just(user),
+                            Pair::new);
                 })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
